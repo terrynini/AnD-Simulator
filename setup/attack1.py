@@ -1,6 +1,4 @@
 #! /usr/bin/env python
-
-
 import curses
 curses.setupterm() 
 

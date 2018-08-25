@@ -119,7 +119,7 @@ void chTeammate()
     printf("New member : ");
     read(STDIN_FILENO, temp, 30);
     temp[strcspn(temp, "\n")] = 0;
-    strcpy(teammate[option], temp);
+    strcpy(teammate[option-1], temp);
 }
 
 int main()

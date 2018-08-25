@@ -29,5 +29,4 @@ services:
         volumes:
         - ./challenges:/opt/sim/challenges:ro
         - ./Bot:/home/simulator:ro
-        command: "/opt/sim/setup/web.sh"
         command: "/opt/sim/setup/bot.sh"

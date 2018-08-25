@@ -8,12 +8,13 @@
     </div>
     <div>
         <p>Bot score: {{ bot_score }} </p>
-        <p>Bot service : </p>
+        <p>Bot service : {{ b_s }}</p>
     </div>
     <div>
         <p>Player score: {{ player_score }} {{p}}</p>
-        <p>Player service : </p>
+        <p>Player service : {{p_s}}</p>
     </div>
+    {{output}}
     <div>
         <p> upload your patch :</p>
         <form id="uploadbanner" enctype="multipart/form-data" method="post" action="/patch">

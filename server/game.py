@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, send_from_directory, redirect, url_for
 from threading import Timer
 import time
+import os
 import subprocess
 
 app = Flask(__name__)
@@ -8,6 +9,11 @@ player_score = 0
 bot_score = 0
 player = True
 bot = True
+p_service = "Warm up"
+b_service = "Warm up"
+_env = os.environ.copy()
+_env['TERM'] =  "linux"
+_env['TERMINFO'] = "/etc/terminfo"
 
 @app.route("/")
 def score_board():
@@ -17,6 +23,8 @@ def score_board():
         'index.html',
         player_score=player_score,
         bot_score=bot_score,
+        p_s=p_service,
+        b_s=b_service,
     )
 
 @app.route("/babyAnD")
@@ -41,7 +49,6 @@ def Submit(check):
             player_score += 1
             player = False
             return "Success !!"
-
     return "Wrong !!"
 
 @app.route("/patch", methods=['POST'])
@@ -61,6 +68,27 @@ def token():
     player = True
     bot    = True
 
+def check():
+    global p_service
+    global b_service
+    global bot_score
+    global player_score
+    output = ""
+    try:
+        output = subprocess.check_output("python /opt/sim/server/checker.py", shell=True, env=_env)
+    except  Exception as e: 
+        print(e)
+        pass
+
+    output = output.split("\n")
+    p_service = output[0] 
+    b_service = output[1] 
+    if p_service != "GOOD" and bot == True:
+        bot_score += 1
+    if b_service != "GOOD" and player == True:
+        player_score += 1
+
 if __name__ == '__main__':
     Timer(5*60, token, ()).start()
+    Timer(5, check, ()).start()
     app.run(host='0.0.0.0', port=80, debug=True)
